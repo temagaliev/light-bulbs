@@ -12,11 +12,12 @@ class GameScene: SKScene {
     
     var backgraundNode = SKSpriteNode()
     
-    var widthGame: Int = 3
-    var heightGame: Int = 4
+    var widthGame: Int = 2
+    var heightGame: Int = 2
     var sizeNode: Int = 50
     var arrayNode: [CustomNode] = []
     var arrayNodeCheck: [CustomNode] = []
+    var arrayNodeDelete: [CustomNode] = []
     
     override func didMove(to view: SKView) {
         backgraundNode = SKSpriteNode(color: SKColor.darkGray, size: CGSize(width: frame.width, height: frame.height))
@@ -67,6 +68,8 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("count", arrayNodeCheck.count)
+        print(self.view?.scene?.children.count)
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
             let node = self.atPoint(touchLocation) as! CustomNode
@@ -93,6 +96,7 @@ class GameScene: SKScene {
     
     private func recursionCheck(node: CustomNode) {
 //        print("recursionCheck")
+        arrayNodeDelete.append(node)
         var isConnect = true
         while isConnect {
             if (node.position.y > CGFloat(-heightGame * sizeNode)) && (node.position.y < CGFloat(heightGame * sizeNode)) && (node.position.x > CGFloat(-widthGame * sizeNode)) && (node.position.x < CGFloat(widthGame * sizeNode)) {
@@ -488,6 +492,14 @@ class GameScene: SKScene {
                 }
                 if isEnd {
                     print("GAME END1")
+                    print("arrayNodeDelete", arrayNodeDelete.count)
+                    for node in arrayNodeDelete {
+                        let colorize = SKAction.colorize(with: .green, colorBlendFactor: 1, duration: 1)
+
+                        node.run(colorize)
+//                        print(node)
+                    }
+//                    print(arrayNodeDelete)
 
                 }
                 isConnect = false
@@ -681,6 +693,8 @@ class GameScene: SKScene {
                 break
             }
         }
+
+        arrayNodeDelete.removeLast()
     }
 }
 
