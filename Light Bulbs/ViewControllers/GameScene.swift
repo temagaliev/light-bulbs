@@ -373,156 +373,139 @@ class GameScene: SKScene {
                 }
                 isConnect = false
 
-                
-//                let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
-//                let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
-//                let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
-//                var isNone: Bool = true
-//                
-//                if node.canConnectLeft && nodeLeft.canConnectRight {
-//                    node.updateTextureNodeAfterRotate(isNone: false)
-//                    isNone = false
-//                    
-//                    if nodeLeft.connect == false {
-//                        recursionCheck(node: nodeLeft)
-//                    }
-//                    isConnect = false
-//                    
-//                }
-//                if node.canConnectTop && nodeTop.canConnectBottom {
-//                    node.updateTextureNodeAfterRotate(isNone: false)
-//                    isNone = false
-//                    
-//                    if nodeTop.connect == false {
-//                        recursionCheck(node: nodeTop)
-//                    }
-//                    isConnect = false
-//                    
-//                }
-//                if node.canConnectBottom && nodeBottom.canConnectTop  {
-//                    node.updateTextureNodeAfterRotate(isNone: false)
-//                    isNone = false
-//                    
-//                    if nodeBottom.connect == false {
-//                        recursionCheck(node: nodeBottom)
-//                    }
-//                    isConnect = false
-//                    
-//                }
-//                if isNone {
-//                    node.updateTextureNodeAfterRotate(isNone: true)
-//                    isConnect = false
-//                    
-//                }
             } else if (node.position.x == CGFloat(-widthGame * sizeNode)) {
 //                print("5")
-                
-                if node.canConnectLeft  {
+
+                if (node.position.y == CGFloat(heightGame * sizeNode)) {
+                    let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
                     let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
-                    node.updateTextureNodeAfterRotate(isNone: false)
                     
-                    if nodeRight.canConnectLeft && node.canConnectRight {
+                    var isNone: Bool = true
+                    if node.canConnectLeft  {
+                        let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        
+                        if nodeRight.canConnectLeft && node.canConnectRight {
+                            if nodeRight.connect == false {
+                                recursionCheck(node: nodeRight)
+                            }
+                        }
+                        isConnect = false
+                    }
+                    
+                    if node.canConnectRight && nodeRight.canConnectLeft && (node.connect || nodeRight.connect)  {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        
                         if nodeRight.connect == false {
                             recursionCheck(node: nodeRight)
                         }
+                        isConnect = false
                     }
-                    isConnect = false
+                    if node.canConnectBottom && nodeBottom.canConnectTop  {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        
+                        if nodeBottom.connect == false {
+                            recursionCheck(node: nodeBottom)
+                        }
+                        isConnect = false
+                    }
+                    if isNone {
+                        node.updateTextureNodeAfterRotate(isNone: true)
+                    }
+                } else if (node.position.y == CGFloat(-heightGame * sizeNode)) {
+                    let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
+                    let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                    
+                    var isNone: Bool = true
+                    
+                    if node.canConnectLeft  {
+                        let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        
+                        if nodeRight.canConnectLeft && node.canConnectRight {
+                            if nodeRight.connect == false {
+                                recursionCheck(node: nodeRight)
+                            }
+                        }
+                        isConnect = false
+                    }
+                    
+                    if node.canConnectRight && nodeRight.canConnectLeft  {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        
+                        if nodeRight.connect == false {
+                            recursionCheck(node: nodeRight)
+                        }
+                        isConnect = false
+                    }
+                    if node.canConnectTop && nodeTop.canConnectBottom {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        
+                        if nodeTop.connect == false {
+                            recursionCheck(node: nodeTop)
+                        }
+                        isConnect = false
+                    }
+                    if isNone {
+                        node.updateTextureNodeAfterRotate(isNone: true)
+                    }
                 } else {
-                    if (node.position.y == CGFloat(heightGame * sizeNode)) {
-                        let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
+                    let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
+                    let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
+                    let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                    
+                    var isNone: Bool = true
+                    
+                    if node.canConnectLeft  {
                         let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                        node.updateTextureNodeAfterRotate(isNone: false)
                         
-                        var isNone: Bool = true
-                        
-                        if node.canConnectRight && nodeRight.canConnectLeft  {
-                            node.updateTextureNodeAfterRotate(isNone: false)
-                            isNone = false
-                            
+                        if nodeRight.canConnectLeft && node.canConnectRight {
                             if nodeRight.connect == false {
                                 recursionCheck(node: nodeRight)
                             }
-                            isConnect = false
                         }
-                        if node.canConnectBottom && nodeBottom.canConnectTop  {
-                            node.updateTextureNodeAfterRotate(isNone: false)
-                            isNone = false
-                            
-                            if nodeBottom.connect == false {
-                                recursionCheck(node: nodeBottom)
-                            }
-                            isConnect = false
-                        }
-                        if isNone {
-                            node.updateTextureNodeAfterRotate(isNone: true)
-                        }
-                    } else if (node.position.y == CGFloat(-heightGame * sizeNode)) {
-                        let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
-                        let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                        isConnect = false
+                    }
+                    
+                    if node.canConnectRight && nodeRight.canConnectLeft  {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
                         
-                        var isNone: Bool = true
+                        if nodeRight.connect == false {
+                            recursionCheck(node: nodeRight)
+                        }
+                        isConnect = false
+                    }
+                    if node.canConnectTop && nodeTop.canConnectBottom  {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
                         
-                        if node.canConnectRight && nodeRight.canConnectLeft  {
-                            node.updateTextureNodeAfterRotate(isNone: false)
-                            isNone = false
-                            
-                            if nodeRight.connect == false {
-                                recursionCheck(node: nodeRight)
-                            }
-                            isConnect = false
+                        if nodeTop.connect == false {
+                            recursionCheck(node: nodeTop)
                         }
-                        if node.canConnectTop && nodeTop.canConnectBottom {
-                            node.updateTextureNodeAfterRotate(isNone: false)
-                            isNone = false
-                            
-                            if nodeTop.connect == false {
-                                recursionCheck(node: nodeTop)
-                            }
-                            isConnect = false
-                        }
-                        if isNone {
-                            node.updateTextureNodeAfterRotate(isNone: true)
-                        }
-                    } else {
-                        let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
-                        let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
-                        let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                        isConnect = false
+                    }
+                    if node.canConnectBottom && nodeBottom.canConnectTop  {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
                         
-                        var isNone: Bool = true
-                        
-                        if node.canConnectRight && nodeRight.canConnectLeft  {
-                            node.updateTextureNodeAfterRotate(isNone: false)
-                            isNone = false
-                            
-                            if nodeRight.connect == false {
-                                recursionCheck(node: nodeRight)
-                            }
-                            isConnect = false
+                        if nodeBottom.connect == false {
+                            recursionCheck(node: nodeBottom)
                         }
-                        if node.canConnectTop && nodeTop.canConnectBottom {
-                            node.updateTextureNodeAfterRotate(isNone: false)
-                            isNone = false
-                            
-                            if nodeTop.connect == false {
-                                recursionCheck(node: nodeTop)
-                            }
-                            isConnect = false
-                        }
-                        if node.canConnectBottom && nodeBottom.canConnectTop {
-                            node.updateTextureNodeAfterRotate(isNone: false)
-                            isNone = false
-                            
-                            if nodeBottom.connect == false {
-                                recursionCheck(node: nodeBottom)
-                            }
-                            isConnect = false
-                        }
-                        if isNone {
-                            node.updateTextureNodeAfterRotate(isNone: true)
-                            isConnect = false
+                        isConnect = false
+                    }
+                    if isNone {
+                        node.updateTextureNodeAfterRotate(isNone: true)
+                        isConnect = false
 
-                        }
                     }
                 }
+            
                 isConnect = false
             } else {
                 isConnect = false

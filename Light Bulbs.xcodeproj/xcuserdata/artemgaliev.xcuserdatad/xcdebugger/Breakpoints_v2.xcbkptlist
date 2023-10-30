@@ -7,17 +7,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5F0B43DD-8E26-43B0-B762-0016496D0116"
+            uuid = "BD5AD4EE-A770-4F88-8012-BC2B70B36708"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Light Bulbs/ViewControllers/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
             landmarkName = "recursionCheck(node:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BD5AD4EE-A770-4F88-8012-BC2B70B36708 - ec67f050f904d6e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Light_Bulbs.GameScene.recursionCheck(node: Light_Bulbs.CustomNode) -&gt; ()"
+                  moduleName = "Light Bulbs"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artemgaliev/Desktop/%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D1%8B/Light%20Bulbs/Light%20Bulbs/ViewControllers/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "383"
+                  endingLineNumber = "383"
+                  offsetFromSymbolStart = "15072">
+               </Location>
+               <Location
+                  uuid = "BD5AD4EE-A770-4F88-8012-BC2B70B36708 - ec67f050f904d6e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Light_Bulbs.GameScene.recursionCheck(node: Light_Bulbs.CustomNode) -&gt; ()"
+                  moduleName = "Light Bulbs"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artemgaliev/Desktop/%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D1%8B/Light%20Bulbs/Light%20Bulbs/ViewControllers/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "383"
+                  endingLineNumber = "383"
+                  offsetFromSymbolStart = "14364">
+               </Location>
+               <Location
+                  uuid = "BD5AD4EE-A770-4F88-8012-BC2B70B36708 - ec67f050f904d6e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Light_Bulbs.GameScene.recursionCheck(node: Light_Bulbs.CustomNode) -&gt; ()"
+                  moduleName = "Light Bulbs"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artemgaliev/Desktop/%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D1%8B/Light%20Bulbs/Light%20Bulbs/ViewControllers/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "383"
+                  endingLineNumber = "383"
+                  offsetFromSymbolStart = "14368">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
