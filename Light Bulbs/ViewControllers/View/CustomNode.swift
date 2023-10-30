@@ -15,6 +15,7 @@ class CustomNode: SKSpriteNode {
     var rotation: Bool = false
     var connect: Bool = false
     var isRepeat: Bool = false
+    var isPowered: Bool = false
 
     var canConnectTop: Bool = false
     var canConnectBottom: Bool = false

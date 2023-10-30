@@ -73,6 +73,7 @@ class GameScene: SKScene {
             node.rotationNode()
             for nodee in arrayNodeCheck {
                 nodee.connect = false
+                nodee.isPowered = false
                 nodee.updateTextureNodeAfterRotate(isNone: true)
 //                print(nodee.connect)
             }
@@ -102,12 +103,30 @@ class GameScene: SKScene {
                 let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                 var isNone: Bool = true
                 
+                if nodeLeft.canConnectRight && nodeLeft.isPowered {
+                    node.isPowered = true
+                }
+                if nodeTop.canConnectBottom && nodeTop.isPowered {
+                    node.isPowered = true
+                }
+                if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                    node.isPowered = true
+                }
+                if nodeRight.canConnectLeft && nodeRight.isPowered {
+                    node.isPowered = true
+                }
+                
+                
                 if node.canConnectLeft && nodeLeft.canConnectRight {
-                    node.updateTextureNodeAfterRotate(isNone: false)
+                    if nodeLeft.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        
+                        isNone = false
+                        node.isPowered = true
+                    }
+
                     
-                    isNone = false
-                    
-                    if nodeLeft.connect == false {
+                    if nodeLeft.connect == false && node.isPowered {
                         recursionCheck(node: nodeLeft)
                     }
                     
@@ -115,11 +134,15 @@ class GameScene: SKScene {
                     
                 }
                 if node.canConnectRight && nodeRight.canConnectLeft {
-                    node.updateTextureNodeAfterRotate(isNone: false)
+                    if nodeRight.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        
+                        isNone = false
+                        node.isPowered = true
+                    }
+
                     
-                    isNone = false
-                    
-                    if nodeRight.connect == false {
+                    if nodeRight.connect == false && node.isPowered {
                         recursionCheck(node: nodeRight)
                     }
                     
@@ -127,20 +150,28 @@ class GameScene: SKScene {
                     
                 }
                 if node.canConnectTop && nodeTop.canConnectBottom {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
+                    if nodeTop.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        node.isPowered = true
+                    }
+
                     
-                    if nodeTop.connect == false {
+                    if nodeTop.connect == false && node.isPowered {
                         recursionCheck(node: nodeTop)
                     }
                     isConnect = false
                     
                 }
                 if node.canConnectBottom && nodeBottom.canConnectTop  {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
+                    if nodeBottom.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        node.isPowered = true
+                    }
+
                     
-                    if nodeBottom.connect == false {
+                    if nodeBottom.connect == false && node.isPowered {
                         recursionCheck(node: nodeBottom)
                     }
                     isConnect = false
@@ -158,30 +189,53 @@ class GameScene: SKScene {
                 let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                 let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                 var isNone: Bool = true
+                
+                if nodeLeft.canConnectRight && nodeLeft.isPowered {
+                    node.isPowered = true
+                }
+                if nodeTop.canConnectBottom && nodeTop.isPowered {
+                    node.isPowered = true
+                }
+
+                if nodeRight.canConnectLeft && nodeRight.isPowered {
+                    node.isPowered = true
+                }
+                
                 if node.canConnectLeft && nodeLeft.canConnectRight {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
-                    if nodeLeft.connect == false {
+                    if nodeLeft.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        node.isPowered = true
+                    }
+
+                    if nodeLeft.connect == false && node.isPowered {
                         recursionCheck(node: nodeLeft)
                     }
                     isConnect = false
                     
                 }
                 if node.canConnectRight && nodeRight.canConnectLeft  {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
+                    if nodeRight.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        node.isPowered = true
+                    }
+
                     
-                    if nodeRight.connect == false {
+                    if nodeRight.connect == false && node.isPowered {
                         recursionCheck(node: nodeRight)
                     }
                     isConnect = false
                     
                 }
                 if node.canConnectTop && nodeTop.canConnectBottom {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
+                    if nodeTop.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        node.isPowered = true
+                    }
                     
-                    if nodeTop.connect == false {
+                    if nodeTop.connect == false && node.isPowered {
                         recursionCheck(node: nodeTop)
                     }
                     isConnect = false
@@ -201,31 +255,54 @@ class GameScene: SKScene {
                 let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                 var isNone: Bool = true
                 
+                if nodeLeft.canConnectRight && nodeLeft.isPowered {
+                    node.isPowered = true
+                }
+
+                if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                    node.isPowered = true
+                }
+                if nodeRight.canConnectLeft && nodeRight.isPowered {
+                    node.isPowered = true
+                }
+                
                 if node.canConnectLeft && nodeLeft.canConnectRight {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
+                    if nodeLeft.isPowered {
+                        node.isPowered = true
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                    }
+
                     
-                    if nodeLeft.connect == false {
+                    if nodeLeft.connect == false && node.isPowered {
                         recursionCheck(node: nodeLeft)
                     }
                     isConnect = false
                     
                 }
                 if node.canConnectRight && nodeRight.canConnectLeft  {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
+                    if nodeRight.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        node.isPowered = true
+                    }
+
                     
-                    if nodeRight.connect == false {
+                    if nodeRight.connect == false && node.isPowered {
                         recursionCheck(node: nodeRight)
                     }
                     isConnect = false
                     
                 }
                 if node.canConnectBottom && nodeBottom.canConnectTop  {
-                    node.updateTextureNodeAfterRotate(isNone: false)
-                    isNone = false
+                    if nodeBottom.isPowered {
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        isNone = false
+                        node.isPowered = true
+                    }
+
                     
-                    if nodeBottom.connect == false {
+                    if nodeBottom.connect == false && node.isPowered {
                         recursionCheck(node: nodeBottom)
                     }
                     isConnect = false
@@ -239,10 +316,6 @@ class GameScene: SKScene {
                 }
             } else if (node.position.x == CGFloat(widthGame * sizeNode)) {
 //                print("4")
-//                let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
-//                let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
-//                let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
-//                let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                 var isEnd: Bool = false
 
                 if (node.position.y == CGFloat(heightGame * sizeNode)) && isEnd == false {
@@ -250,28 +323,43 @@ class GameScene: SKScene {
                     let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
 
                     var isNone: Bool = true
-                    
+                    if nodeLeft.canConnectRight && nodeLeft.isPowered {
+                        node.isPowered = true
+                    }
+
+                    if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                        node.isPowered = true
+                    }
+
                     if node.canConnectLeft && nodeLeft.canConnectRight  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
+                        if nodeLeft.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
                         
                         if node.canConnectRight {
                             isEnd = true
                         } else {
-                            if nodeLeft.connect == false {
+                            if nodeLeft.connect == false && node.isPowered {
                                 recursionCheck(node: nodeLeft)
                                 isConnect = false
                             }
                         }
                     }
                     if node.canConnectBottom && nodeBottom.canConnectTop  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
+                        if nodeBottom.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
                         
                         if node.canConnectRight {
                             isEnd = true
                         } else {
-                            if nodeBottom.connect == false {
+                            if nodeBottom.connect == false && node.isPowered {
                                 recursionCheck(node: nodeBottom)
                                 isConnect = false
                             }
@@ -285,28 +373,41 @@ class GameScene: SKScene {
                     let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
 
                     var isNone: Bool = true
-                    
+                    if nodeLeft.canConnectRight && nodeLeft.isPowered {
+                        node.isPowered = true
+                    }
+                    if nodeTop.canConnectBottom && nodeTop.isPowered {
+                        node.isPowered = true
+                    }
+
                     if node.canConnectLeft && nodeLeft.canConnectRight  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
+                        if nodeLeft.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
                         
                         if node.canConnectRight {
                             isEnd = true
                         } else {
-                            if nodeLeft.connect == false {
+                            if nodeLeft.connect == false && node.isPowered {
                                 recursionCheck(node: nodeLeft)
                                 isConnect = false
                             }
                         }
                     }
                     if node.canConnectTop && nodeTop.canConnectBottom {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
+                        if nodeTop.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
                         if node.canConnectRight {
                             isEnd = true
                         } else {
-                            if nodeTop.connect == false {
+                            if nodeTop.connect == false && node.isPowered {
                                 recursionCheck(node: nodeTop)
                                 isConnect = false
                             }
@@ -321,41 +422,59 @@ class GameScene: SKScene {
                     let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
 
                     var isNone: Bool = true
-                    
+                    if nodeLeft.canConnectRight && nodeLeft.isPowered {
+                        node.isPowered = true
+                    }
+                    if nodeTop.canConnectBottom && nodeTop.isPowered {
+                        node.isPowered = true
+                    }
+                    if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                        node.isPowered = true
+                    }
+
                     if node.canConnectLeft && nodeLeft.canConnectRight  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
+                        if nodeLeft.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
                         if node.canConnectRight {
                             isEnd = true
                         } else {
-                            if nodeLeft.connect == false {
+                            if nodeLeft.connect == false && node.isPowered {
                                 recursionCheck(node: nodeLeft)
                                 isConnect = false
                             }
                         }
                     }
                     if node.canConnectTop && nodeTop.canConnectBottom {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
+                        if nodeTop.isPowered {
+                            node.isPowered = true
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                        }
+
                         if node.canConnectRight {
                             isEnd = true
                         } else {
-                            if nodeTop.connect == false {
+                            if nodeTop.connect == false && node.isPowered {
                                 recursionCheck(node: nodeTop)
                                 isConnect = false
                             }
                         }
                     }
                     if node.canConnectBottom && nodeBottom.canConnectTop  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
+                        if nodeBottom.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
                         if node.canConnectRight {
                             isEnd = true
                         } else {
-                            if nodeBottom.connect == false {
+                            if nodeBottom.connect == false && node.isPowered {
                                 recursionCheck(node: nodeBottom)
                                 isConnect = false
                             }
@@ -375,55 +494,24 @@ class GameScene: SKScene {
 
             } else if (node.position.x == CGFloat(-widthGame * sizeNode)) {
 //                print("5")
-
                 if (node.position.y == CGFloat(heightGame * sizeNode)) {
                     let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
                     let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+
+                    if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                        node.isPowered = true
+                    }
+                    if nodeRight.canConnectLeft && nodeRight.isPowered {
+                        node.isPowered = true
+                    }
                     
                     var isNone: Bool = true
                     if node.canConnectLeft  {
                         let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                         node.updateTextureNodeAfterRotate(isNone: false)
-                        
-                        if nodeRight.canConnectLeft && node.canConnectRight {
-                            if nodeRight.connect == false {
-                                recursionCheck(node: nodeRight)
-                            }
-                        }
-                        isConnect = false
-                    }
-                    
-                    if node.canConnectRight && nodeRight.canConnectLeft && (node.connect || nodeRight.connect)  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
+                        node.isPowered = true
                         isNone = false
-                        
-                        if nodeRight.connect == false {
-                            recursionCheck(node: nodeRight)
-                        }
-                        isConnect = false
-                    }
-                    if node.canConnectBottom && nodeBottom.canConnectTop  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
-                        if nodeBottom.connect == false {
-                            recursionCheck(node: nodeBottom)
-                        }
-                        isConnect = false
-                    }
-                    if isNone {
-                        node.updateTextureNodeAfterRotate(isNone: true)
-                    }
-                } else if (node.position.y == CGFloat(-heightGame * sizeNode)) {
-                    let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
-                    let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
-                    
-                    var isNone: Bool = true
-                    
-                    if node.canConnectLeft  {
-                        let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        
+
                         if nodeRight.canConnectLeft && node.canConnectRight {
                             if nodeRight.connect == false {
                                 recursionCheck(node: nodeRight)
@@ -433,19 +521,80 @@ class GameScene: SKScene {
                     }
                     
                     if node.canConnectRight && nodeRight.canConnectLeft  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
+                        if nodeRight.isPowered  {
+                            node.isPowered = true
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                        }
                         
-                        if nodeRight.connect == false {
+                        if nodeRight.connect == false && node.isPowered {
+                            recursionCheck(node: nodeRight)
+                        }
+                        isConnect = false
+                    }
+                    if node.canConnectBottom && nodeBottom.canConnectTop  {
+                        if nodeBottom.isPowered {
+                            node.isPowered = true
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                        }
+                        
+                        if nodeBottom.connect == false && node.isPowered {
+                            recursionCheck(node: nodeBottom)
+                        }
+                        isConnect = false
+                    }
+                    
+                    if isNone {
+                        node.updateTextureNodeAfterRotate(isNone: true)
+                    }
+                } else if (node.position.y == CGFloat(-heightGame * sizeNode)) {
+                    let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
+                    let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                    if nodeTop.canConnectBottom && nodeTop.isPowered {
+                        node.isPowered = true
+                    }
+
+                    if nodeRight.canConnectLeft && nodeRight.isPowered {
+                        node.isPowered = true
+                    }
+                    var isNone: Bool = true
+                    
+                    if node.canConnectLeft  {
+                        let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
+                        node.updateTextureNodeAfterRotate(isNone: false)
+                        node.isPowered = true
+                        isNone = false
+
+                        if nodeRight.canConnectLeft && node.canConnectRight {
+                            if nodeRight.connect == false {
+                                recursionCheck(node: nodeRight)
+                            }
+                        }
+                        isConnect = false
+                    }
+                    
+                    if node.canConnectRight && nodeRight.canConnectLeft  {
+                        if nodeRight.isPowered {
+                            node.isPowered = true
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                        }
+
+                        
+                        if nodeRight.connect == false && node.isPowered {
                             recursionCheck(node: nodeRight)
                         }
                         isConnect = false
                     }
                     if node.canConnectTop && nodeTop.canConnectBottom {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
-                        if nodeTop.connect == false {
+                        if nodeTop.isPowered {
+                            node.isPowered = true
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                        }
+
+                        if nodeTop.connect == false && node.isPowered {
                             recursionCheck(node: nodeTop)
                         }
                         isConnect = false
@@ -459,11 +608,23 @@ class GameScene: SKScene {
                     let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                     
                     var isNone: Bool = true
+
+                    if nodeTop.canConnectBottom && nodeTop.isPowered {
+                        node.isPowered = true
+                    }
+                    if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                        node.isPowered = true
+                    }
+                    if nodeRight.canConnectLeft && nodeRight.isPowered {
+                        node.isPowered = true
+                    }
                     
                     if node.canConnectLeft  {
                         let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
                         node.updateTextureNodeAfterRotate(isNone: false)
-                        
+                        node.isPowered = true
+                        isNone = false
+
                         if nodeRight.canConnectLeft && node.canConnectRight {
                             if nodeRight.connect == false {
                                 recursionCheck(node: nodeRight)
@@ -473,28 +634,37 @@ class GameScene: SKScene {
                     }
                     
                     if node.canConnectRight && nodeRight.canConnectLeft  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
-                        if nodeRight.connect == false {
+                        if nodeRight.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
+                        if nodeRight.connect == false && node.isPowered {
                             recursionCheck(node: nodeRight)
                         }
                         isConnect = false
                     }
                     if node.canConnectTop && nodeTop.canConnectBottom  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
-                        
-                        if nodeTop.connect == false {
+                        if nodeTop.isPowered {
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                            node.isPowered = true
+                        }
+
+                        if nodeTop.connect == false && node.isPowered {
                             recursionCheck(node: nodeTop)
                         }
                         isConnect = false
                     }
                     if node.canConnectBottom && nodeBottom.canConnectTop  {
-                        node.updateTextureNodeAfterRotate(isNone: false)
-                        isNone = false
+                        if nodeBottom.isPowered {
+                            node.isPowered = true
+                            node.updateTextureNodeAfterRotate(isNone: false)
+                            isNone = false
+                        }
                         
-                        if nodeBottom.connect == false {
+                        if nodeBottom.connect == false && node.isPowered {
                             recursionCheck(node: nodeBottom)
                         }
                         isConnect = false
@@ -505,7 +675,6 @@ class GameScene: SKScene {
 
                     }
                 }
-            
                 isConnect = false
             } else {
                 isConnect = false
@@ -515,7 +684,6 @@ class GameScene: SKScene {
     }
 }
 
-
 //MARK: - SKSceneDelegate
 extension GameScene: SKSceneDelegate {
     override func update(_ currentTime: TimeInterval) {
@@ -523,54 +691,3 @@ extension GameScene: SKSceneDelegate {
     }
 }
 
-
-
-
-
-
-
-//(node.position.y > CGFloat(-heightGame * sizeNode)) && (node.position.y < CGFloat(heightGame * sizeNode)) && (node.position.x > CGFloat(-widthGame * sizeNode)) && (node.position.x == CGFloat(widthGame * sizeNode))
-//{
-//    print("4")
-//    
-//    let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
-//    let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
-//    let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
-//    var isNone: Bool = true
-//    
-//    if node.canConnectLeft && nodeLeft.canConnectRight {
-//        node.updateTextureNodeAfterRotate(isNone: false)
-//        isNone = false
-//        
-//        if nodeLeft.connect == false {
-//            recursionCheck(node: nodeLeft)
-//        }
-//        isConnect = false
-//        
-//    }
-//    if node.canConnectTop && nodeTop.canConnectBottom {
-//        node.updateTextureNodeAfterRotate(isNone: false)
-//        isNone = false
-//        
-//        if nodeTop.connect == false {
-//            recursionCheck(node: nodeTop)
-//        }
-//        isConnect = false
-//        
-//    }
-//    if node.canConnectBottom && nodeBottom.canConnectTop  {
-//        node.updateTextureNodeAfterRotate(isNone: false)
-//        isNone = false
-//        
-//        if nodeBottom.connect == false {
-//            recursionCheck(node: nodeBottom)
-//        }
-//        isConnect = false
-//        
-//    }
-//    if isNone {
-//        node.updateTextureNodeAfterRotate(isNone: true)
-//        isConnect = false
-//        
-//    }
-//}
