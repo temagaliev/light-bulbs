@@ -61,6 +61,18 @@ class CustomNode: SKSpriteNode {
             canConnectRight = true
             imageName = NameImage.fourNone.rawValue
 
+        case .standardBonus:
+            canConnectTop = true
+            canConnectBottom = true
+            canConnectLeft = false
+            canConnectRight = false
+            imageName = NameImage.firstNoneBonus.rawValue
+        case .gShapedBonus:
+            canConnectTop = false
+            canConnectBottom = true
+            canConnectLeft = false
+            canConnectRight = true
+            imageName = NameImage.thirdNoneBonus.rawValue
         }
         
         let texture = SKTexture(imageNamed: imageName)
@@ -84,6 +96,12 @@ class CustomNode: SKSpriteNode {
                 self.texture = SKTexture(imageNamed: NameImage.thirdNone.rawValue)
             case .tShaped:
                 self.texture = SKTexture(imageNamed: NameImage.fourNone.rawValue)
+            case .standardBonus:
+                self.texture = SKTexture(imageNamed: NameImage.firstNoneBonus.rawValue)
+
+            case .gShapedBonus:
+                self.texture = SKTexture(imageNamed: NameImage.thirdNoneBonus.rawValue)
+
             }
         } else {
             self.connect = true
@@ -97,6 +115,11 @@ class CustomNode: SKSpriteNode {
                 self.texture = SKTexture(imageNamed: NameImage.third.rawValue)
             case .tShaped:
                 self.texture = SKTexture(imageNamed: NameImage.four.rawValue)
+            case .standardBonus:
+                self.texture = SKTexture(imageNamed: NameImage.firstBonus.rawValue)
+            case .gShapedBonus:
+                self.texture = SKTexture(imageNamed: NameImage.thirdBonus.rawValue)
+
             }
         }
 //        print("ОКРАШИВАНИЕ", self.connect )
@@ -190,6 +213,60 @@ class CustomNode: SKSpriteNode {
                 canConnectTop = true
                 canConnectBottom = false
                 canConnectLeft = true
+                canConnectRight = true
+                stateNode = .firstState
+            }
+        case .standardBonus:
+            switch stateNode {
+            case .firstState:
+                canConnectTop = false
+                canConnectBottom = false
+                canConnectLeft = true
+                canConnectRight = true
+                stateNode = .secondState
+            case .secondState:
+                canConnectTop = true
+                canConnectBottom = true
+                canConnectLeft = false
+                canConnectRight = false
+                stateNode = .thirdState
+            case .thirdState:
+                canConnectTop = false
+                canConnectBottom = false
+                canConnectLeft = true
+                canConnectRight = true
+                stateNode = .fourState
+            case .fourState:
+                canConnectTop = true
+                canConnectBottom = true
+                canConnectLeft = false
+                canConnectRight = false
+                stateNode = .firstState
+            }
+        case .gShapedBonus:
+            switch stateNode {
+            case .firstState:
+                canConnectTop = false
+                canConnectBottom = true
+                canConnectLeft = true
+                canConnectRight = false
+                stateNode = .secondState
+            case .secondState:
+                canConnectTop = true
+                canConnectBottom = false
+                canConnectLeft = true
+                canConnectRight = false
+                stateNode = .thirdState
+            case .thirdState:
+                canConnectTop = true
+                canConnectBottom = false
+                canConnectLeft = false
+                canConnectRight = true
+                stateNode = .fourState
+            case .fourState:
+                canConnectTop = false
+                canConnectBottom = true
+                canConnectLeft = false
                 canConnectRight = true
                 stateNode = .firstState
             }

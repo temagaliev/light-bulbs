@@ -12,12 +12,22 @@ class GameScene: SKScene {
     
     var backgraundNode = SKSpriteNode()
     
-    var widthGame: Int = 2
-    var heightGame: Int = 2
-    var sizeNode: Int = 50
-    var arrayNode: [CustomNode] = []
+    var widthGame: Int = 3
+    var heightGame: Int = 4
+    var sizeNode: Int = 45
+    
+    var currentScore: Int = 0
+    var maxScore: Int = 300
+    
+    var isUpdateEnd: Bool = false
+    
     var arrayNodeCheck: [CustomNode] = []
     var arrayNodeDelete: [CustomNode] = []
+
+    var gameVCDelegate: GameViewControllerDelegate?
+    
+    var timerValue: Int = 60
+    var timer = Timer()
     
     override func didMove(to view: SKView) {
         backgraundNode = SKSpriteNode(color: SKColor.darkGray, size: CGSize(width: frame.width, height: frame.height))
@@ -27,31 +37,39 @@ class GameScene: SKScene {
     
     //MARK: - Начало игры
     public func startGame() {
+        currentScore = 0
+        maxScore = 300
+        timerValue = 60
+        gameVCDelegate?.counterScoreValue(scoreValue: currentScore, maxValue: maxScore)
         createStartNode()
         
         for vertical in -heightGame...heightGame {
-            let nodeC: CustomNode = self.atPoint(CGPoint(x: CGFloat(-widthGame * sizeNode), y: CGFloat(vertical) * CGFloat(sizeNode))) as! CustomNode
-            recursionCheck(node: nodeC)
-//            print(nodeC.position)
-
+            let nodeCustom: CustomNode = self.atPoint(CGPoint(x: CGFloat(-widthGame * sizeNode), y: CGFloat(vertical) * CGFloat(sizeNode))) as! CustomNode
+            recursionCheck(node: nodeCustom)
         }
-
+        startTimer()
     }
     
+    //MARK: - Создание игровых элементов
     private func createStartNode() {
+        //Добавление элементов на поле
         for i in -heightGame...heightGame {
             for j in -widthGame...widthGame {
                 let random = Int.random(in: 1...100)
                 var type: TypeNode = .standard
                 switch random {
-                case 1...30:
+                case 1...28:
                     type = .standard
-                case 90...100:
+                case 95...100:
                     type = .crossroads
-                case 31...60:
+                case 31...68:
                     type = .gShaped
-                case 61...89:
+                case 71...94:
                     type = .tShaped
+                case 29...30:
+                    type = .standardBonus
+                case 69...70:
+                    type = .gShapedBonus
                 default:
                     type = .standard
                 }
@@ -61,46 +79,64 @@ class GameScene: SKScene {
                 if j == -widthGame {
                     obstacleNode.pathNode = String(i + i + 1)
                 }
-                arrayNodeCheck.append(obstacleNode)
+                
                 addChild(obstacleNode)
+                
+                let randomRotate = Int.random(in: 1...4)
+                for _ in 0...randomRotate {
+                    obstacleNode.rotationNode()
+                }
+                
+                arrayNodeCheck.append(obstacleNode)
+
+                
+                //Добавление иконок лампочек и тока
+                if j == -widthGame {
+                    let nodeOne = SKSpriteNode(color: .blue, size: CGSize(width: 15, height: 15))
+                    nodeOne.position = CGPoint(x: j * sizeNode + -(sizeNode - 5), y: i * sizeNode)
+                    addChild(nodeOne)
+
+                }
+                if j == widthGame {
+                    let nodeOne = SKSpriteNode(color: .red, size: CGSize(width: 15, height: 15))
+                    nodeOne.position = CGPoint(x: j * sizeNode + (sizeNode - 5), y: i * sizeNode)
+                    addChild(nodeOne)
+                }
             }
         }
     }
     
+    //MARK: - Обработка нажатия на элемент
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("count", arrayNodeCheck.count)
-        print(self.view?.scene?.children.count)
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
             let node = self.atPoint(touchLocation) as! CustomNode
+            //Вращение фигуры
             node.rotationNode()
-            for nodee in arrayNodeCheck {
-                nodee.connect = false
-                nodee.isPowered = false
-                nodee.updateTextureNodeAfterRotate(isNone: true)
-//                print(nodee.connect)
+            
+            //Обновление переменных перед провекрой
+            for nodeCheck in arrayNodeCheck {
+                nodeCheck.connect = false
+                nodeCheck.isPowered = false
+                nodeCheck.updateTextureNodeAfterRotate(isNone: true)
             }
             
-//            recursionCheck(node: node)
-//            print(node.position)
+            //Запуск проверки
             for vertical in -heightGame...heightGame {
-                let nodeC: CustomNode = self.atPoint(CGPoint(x: CGFloat(-widthGame * sizeNode), y: CGFloat(vertical) * CGFloat(sizeNode))) as! CustomNode
-                recursionCheck(node: nodeC)
-//                print(nodeC.position)
-
+                let nodeCustom: CustomNode = self.atPoint(CGPoint(x: CGFloat(-widthGame * sizeNode), y: CGFloat(vertical) * CGFloat(sizeNode))) as! CustomNode
+                recursionCheck(node: nodeCustom)
             }
-//            
-//            print("node.type - \(node.type), node.connect - \(node.connect), node.topConnect - \(node.canConnectTop), node.bottomConnect - \(node.canConnectBottom), node.leftConnect - \(node.canConnectLeft), node.rightConnect - \(node.canConnectRight) , node.path - \(node.pathNode)")
         }
     }
     
+    //MARK: - Рекурсивная проверка
     private func recursionCheck(node: CustomNode) {
-//        print("recursionCheck")
         arrayNodeDelete.append(node)
         var isConnect = true
         while isConnect {
+            //MARK: - Inside check
             if (node.position.y > CGFloat(-heightGame * sizeNode)) && (node.position.y < CGFloat(heightGame * sizeNode)) && (node.position.x > CGFloat(-widthGame * sizeNode)) && (node.position.x < CGFloat(widthGame * sizeNode)) {
-//                print("1")
+                
                 let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
                 let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
                 let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
@@ -124,28 +160,23 @@ class GameScene: SKScene {
                 if node.canConnectLeft && nodeLeft.canConnectRight {
                     if nodeLeft.isPowered {
                         node.updateTextureNodeAfterRotate(isNone: false)
-                        
                         isNone = false
                         node.isPowered = true
                     }
 
-                    
                     if nodeLeft.connect == false && node.isPowered {
                         recursionCheck(node: nodeLeft)
                     }
                     
                     isConnect = false
-                    
                 }
                 if node.canConnectRight && nodeRight.canConnectLeft {
                     if nodeRight.isPowered {
                         node.updateTextureNodeAfterRotate(isNone: false)
-                        
                         isNone = false
                         node.isPowered = true
                     }
 
-                    
                     if nodeRight.connect == false && node.isPowered {
                         recursionCheck(node: nodeRight)
                     }
@@ -160,10 +191,10 @@ class GameScene: SKScene {
                         node.isPowered = true
                     }
 
-                    
                     if nodeTop.connect == false && node.isPowered {
                         recursionCheck(node: nodeTop)
                     }
+                    
                     isConnect = false
                     
                 }
@@ -174,10 +205,10 @@ class GameScene: SKScene {
                         node.isPowered = true
                     }
 
-                    
                     if nodeBottom.connect == false && node.isPowered {
                         recursionCheck(node: nodeBottom)
                     }
+                    
                     isConnect = false
                     
                 }
@@ -186,8 +217,8 @@ class GameScene: SKScene {
                     isConnect = false
                     
                 }
+            //MARK: - Bottom check
             } else if (node.position.y == CGFloat(-heightGame * sizeNode)) && (node.position.y < CGFloat(heightGame * sizeNode)) && (node.position.x > CGFloat(-widthGame * sizeNode)) && (node.position.x < CGFloat(widthGame * sizeNode)) {
-//                print("2")
                 
                 let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
                 let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
@@ -197,6 +228,7 @@ class GameScene: SKScene {
                 if nodeLeft.canConnectRight && nodeLeft.isPowered {
                     node.isPowered = true
                 }
+                
                 if nodeTop.canConnectBottom && nodeTop.isPowered {
                     node.isPowered = true
                 }
@@ -215,6 +247,7 @@ class GameScene: SKScene {
                     if nodeLeft.connect == false && node.isPowered {
                         recursionCheck(node: nodeLeft)
                     }
+                    
                     isConnect = false
                     
                 }
@@ -225,12 +258,11 @@ class GameScene: SKScene {
                         node.isPowered = true
                     }
 
-                    
                     if nodeRight.connect == false && node.isPowered {
                         recursionCheck(node: nodeRight)
                     }
-                    isConnect = false
                     
+                    isConnect = false
                 }
                 if node.canConnectTop && nodeTop.canConnectBottom {
                     if nodeTop.isPowered {
@@ -242,8 +274,8 @@ class GameScene: SKScene {
                     if nodeTop.connect == false && node.isPowered {
                         recursionCheck(node: nodeTop)
                     }
-                    isConnect = false
                     
+                    isConnect = false
                 }
                 
                 if isNone {
@@ -251,8 +283,8 @@ class GameScene: SKScene {
                     isConnect = false
                     
                 }
+            //MARK: - Top check
             } else if (node.position.y > CGFloat(-heightGame * sizeNode)) && (node.position.y == CGFloat(heightGame * sizeNode)) && (node.position.x > CGFloat(-widthGame * sizeNode)) && (node.position.x < CGFloat(widthGame * sizeNode)) {
-//                print("3")
                 
                 let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
                 let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
@@ -266,6 +298,7 @@ class GameScene: SKScene {
                 if nodeBottom.canConnectTop && nodeBottom.isPowered {
                     node.isPowered = true
                 }
+                
                 if nodeRight.canConnectLeft && nodeRight.isPowered {
                     node.isPowered = true
                 }
@@ -277,12 +310,11 @@ class GameScene: SKScene {
                         isNone = false
                     }
 
-                    
                     if nodeLeft.connect == false && node.isPowered {
                         recursionCheck(node: nodeLeft)
                     }
-                    isConnect = false
                     
+                    isConnect = false
                 }
                 if node.canConnectRight && nodeRight.canConnectLeft  {
                     if nodeRight.isPowered {
@@ -291,10 +323,10 @@ class GameScene: SKScene {
                         node.isPowered = true
                     }
 
-                    
                     if nodeRight.connect == false && node.isPowered {
                         recursionCheck(node: nodeRight)
                     }
+                    
                     isConnect = false
                     
                 }
@@ -305,21 +337,19 @@ class GameScene: SKScene {
                         node.isPowered = true
                     }
 
-                    
                     if nodeBottom.connect == false && node.isPowered {
                         recursionCheck(node: nodeBottom)
                     }
-                    isConnect = false
                     
+                    isConnect = false
                 }
-                
                 if isNone {
                     node.updateTextureNodeAfterRotate(isNone: true)
                     isConnect = false
                     
                 }
+            //MARK: - Right check
             } else if (node.position.x == CGFloat(widthGame * sizeNode)) {
-//                print("4")
                 var isEnd: Bool = false
 
                 if (node.position.y == CGFloat(heightGame * sizeNode)) && isEnd == false {
@@ -327,6 +357,7 @@ class GameScene: SKScene {
                     let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
 
                     var isNone: Bool = true
+                    
                     if nodeLeft.canConnectRight && nodeLeft.isPowered {
                         node.isPowered = true
                     }
@@ -342,7 +373,6 @@ class GameScene: SKScene {
                             node.isPowered = true
                         }
 
-                        
                         if node.canConnectRight {
                             isEnd = true
                         } else {
@@ -359,7 +389,6 @@ class GameScene: SKScene {
                             node.isPowered = true
                         }
 
-                        
                         if node.canConnectRight {
                             isEnd = true
                         } else {
@@ -369,6 +398,7 @@ class GameScene: SKScene {
                             }
                         }
                     }
+                    
                     if isNone {
                         node.updateTextureNodeAfterRotate(isNone: true)
                     }
@@ -377,9 +407,11 @@ class GameScene: SKScene {
                     let nodeLeft: CustomNode = self.atPoint(CGPoint(x: node.position.x - CGFloat(sizeNode), y: node.position.y)) as! CustomNode
 
                     var isNone: Bool = true
+                    
                     if nodeLeft.canConnectRight && nodeLeft.isPowered {
                         node.isPowered = true
                     }
+                    
                     if nodeTop.canConnectBottom && nodeTop.isPowered {
                         node.isPowered = true
                     }
@@ -391,7 +423,6 @@ class GameScene: SKScene {
                             node.isPowered = true
                         }
 
-                        
                         if node.canConnectRight {
                             isEnd = true
                         } else {
@@ -487,25 +518,87 @@ class GameScene: SKScene {
                     if isNone {
                         node.updateTextureNodeAfterRotate(isNone: true)
                     }
-                } else {
-                    print("GAME END")
                 }
+                //MARK: - Конец игры
                 if isEnd {
-                    print("GAME END1")
-                    print("arrayNodeDelete", arrayNodeDelete.count)
+                    isConnect = false
                     for node in arrayNodeDelete {
+                        if node.type == .gShapedBonus || node.type == .standardBonus {
+                            currentScore = currentScore + 10
+                        } else {
+                            currentScore = currentScore + 1
+                        }
+                        gameVCDelegate?.counterScoreValue(scoreValue: currentScore, maxValue: maxScore)
+                        
                         let colorize = SKAction.colorize(with: .green, colorBlendFactor: 1, duration: 1)
-
                         node.run(colorize)
-//                        print(node)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: { [weak self] in
+                            guard let self = self else {return}
+                            let position = node.position
+                            node.removeFromParent()
+                            for i in 0...arrayNodeCheck.count - 1 {
+                                if arrayNodeCheck[i] == node {
+                                    arrayNodeCheck.remove(at: i)
+                                    break
+                                }
+                            }
+                            
+                            let random = Int.random(in: 1...100)
+                            var type: TypeNode = .standard
+                            switch random {
+                            case 1...28:
+                                type = .standard
+                            case 95...100:
+                                type = .crossroads
+                            case 31...68:
+                                type = .gShaped
+                            case 71...94:
+                                type = .tShaped
+                            case 29...30:
+                                type = .standardBonus
+                            case 69...70:
+                                type = .gShapedBonus
+                            default:
+                                type = .standard
+                            }
+                            
+                            let obstacleNode = CustomNode(type: type, sizeNode: CGSize(width: CGFloat(self.sizeNode), height: CGFloat(self.sizeNode)))
+                            obstacleNode.position = CGPoint(x: position.x, y: position.y)
+                            addChild(obstacleNode)
+                            
+                            let randomRotate = Int.random(in: 1...4)
+                            for _ in 0...randomRotate {
+                                obstacleNode.rotationNode()
+                            }
+                            
+                            arrayNodeCheck.append(obstacleNode)
+
+                        })
+                        
                     }
-//                    print(arrayNodeDelete)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1050), execute: { [weak self] in
+                        guard let self = self else {return}
 
+                        //Обновление переменных перед провекрой
+                        for nodeCheck in self.arrayNodeCheck {
+                            nodeCheck.connect = false
+                            nodeCheck.isPowered = false
+                            nodeCheck.updateTextureNodeAfterRotate(isNone: true)
+                        }
+                        
+                        //Запуск проверки
+                        for vertical in -self.heightGame...self.heightGame {
+                            let nodeCustom: CustomNode = self.atPoint(CGPoint(x: CGFloat(-self.widthGame * self.sizeNode), y: CGFloat(vertical) * CGFloat(self.sizeNode))) as! CustomNode
+                            self.recursionCheck(node: nodeCustom)
+                        }
+                    })
                 }
-                isConnect = false
 
+                isConnect = false
+                
+            //MARK: - Left check
             } else if (node.position.x == CGFloat(-widthGame * sizeNode)) {
-//                print("5")
+                
                 if (node.position.y == CGFloat(heightGame * sizeNode)) {
                     let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
                     let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
@@ -593,7 +686,6 @@ class GameScene: SKScene {
                             isNone = false
                         }
 
-                        
                         if nodeRight.connect == false && node.isPowered {
                             recursionCheck(node: nodeRight)
                         }
@@ -684,7 +776,6 @@ class GameScene: SKScene {
                     if isNone {
                         node.updateTextureNodeAfterRotate(isNone: true)
                         isConnect = false
-
                     }
                 }
                 isConnect = false
@@ -693,8 +784,24 @@ class GameScene: SKScene {
                 break
             }
         }
-
         arrayNodeDelete.removeLast()
+    }
+    
+    func startTimer() {
+
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
+
+        gameVCDelegate?.counterTimerValue(timerValue: timerValue)
+
+    }
+    
+    @objc func countDown() {
+        timerValue = timerValue - 1
+        gameVCDelegate?.counterTimerValue(timerValue: timerValue)
+        if timerValue == 0 {
+            MainRouter.shared.showMenuViewScreen()
+            timer.invalidate()
+        }
     }
 }
 

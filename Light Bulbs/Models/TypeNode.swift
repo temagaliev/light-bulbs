@@ -12,4 +12,6 @@ enum TypeNode {
     case gShaped
     case tShaped
     case crossroads
+    case standardBonus
+    case gShapedBonus
 }

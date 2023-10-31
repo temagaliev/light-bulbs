@@ -17,4 +17,8 @@ enum NameImage: String {
     case thirdNone = "thirdNone"
     case fourNone = "fourNone"
     case dead = "dead"
+    case firstNoneBonus = "firstNoneBonus"
+    case firstBonus = "firstBonus"
+    case thirdNoneBonus = "thirdNoneBonus"
+    case thirdBonus = "thirdBonus"
 }
