@@ -603,10 +603,10 @@ class GameScene: SKScene {
                     let nodeBottom: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y - CGFloat(sizeNode))) as! CustomNode
                     let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
 
-                    if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                    if node.canConnectBottom && nodeBottom.canConnectTop && nodeBottom.isPowered {
                         node.isPowered = true
                     }
-                    if nodeRight.canConnectLeft && nodeRight.isPowered {
+                    if node.canConnectRight && nodeRight.canConnectLeft && nodeRight.isPowered {
                         node.isPowered = true
                     }
                     
@@ -656,11 +656,11 @@ class GameScene: SKScene {
                 } else if (node.position.y == CGFloat(-heightGame * sizeNode)) {
                     let nodeTop: CustomNode = self.atPoint(CGPoint(x: node.position.x, y: node.position.y + CGFloat(sizeNode))) as! CustomNode
                     let nodeRight: CustomNode = self.atPoint(CGPoint(x: node.position.x + CGFloat(sizeNode), y: node.position.y)) as! CustomNode
-                    if nodeTop.canConnectBottom && nodeTop.isPowered {
+                    if node.canConnectTop && nodeTop.canConnectBottom && nodeTop.isPowered {
                         node.isPowered = true
                     }
 
-                    if nodeRight.canConnectLeft && nodeRight.isPowered {
+                    if node.canConnectRight && nodeRight.canConnectLeft && nodeRight.isPowered {
                         node.isPowered = true
                     }
                     var isNone: Bool = true
@@ -713,13 +713,13 @@ class GameScene: SKScene {
                     
                     var isNone: Bool = true
 
-                    if nodeTop.canConnectBottom && nodeTop.isPowered {
+                    if node.canConnectTop && nodeTop.canConnectBottom && nodeTop.isPowered {
                         node.isPowered = true
                     }
-                    if nodeBottom.canConnectTop && nodeBottom.isPowered {
+                    if node.canConnectBottom && nodeBottom.canConnectTop && nodeBottom.isPowered {
                         node.isPowered = true
                     }
-                    if nodeRight.canConnectLeft && nodeRight.isPowered {
+                    if node.canConnectRight && nodeRight.canConnectLeft && nodeRight.isPowered {
                         node.isPowered = true
                     }
                     
